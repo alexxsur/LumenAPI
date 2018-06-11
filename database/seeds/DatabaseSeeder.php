@@ -21,19 +21,18 @@ class DatabaseSeeder extends Seeder {
 		Profesor::truncate();
 		Curso::truncate();
 		DB::table('curso_estudiante')->truncate();
-		DB::table('oauth_clients')->truncate();		
 
 		factory(Profesor::class, 50)->create();
 
 		factory(Estudiante::class, 500)->create();
 
-		factory(Curso::class, 40)->create()
+		factory(Curso::class, 40)->create(['profesor_id' => mt_rand(1, 50)])
 		->each(function($curso)
 			{
 				$curso->estudiantes()->attach(array_rand(range(1, 500),40));
 			});
 
-		$this->call('OAuthClientSeeder');
+		// $this->call('UserTableSeeder');
 	}
 
 }

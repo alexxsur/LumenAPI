@@ -1,19 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use App\Curso;
-
 class CursoController extends Controller
 {
 	public function index()
 	{
-		$cursos = Curso::all();
-		return $this->crearRespuesta($cursos, 200);
+		return 'desde index en cursocontroller';
 	}
 
-	public function show($id)
+	public function show()
 	{
-		$curso = $this->buscar(Curso::class, $id);
-		
-		return $this->crearRespuesta($curso, 200);
+		return 'desde show en cursocontroller';
 	}
 }

@@ -3,14 +3,6 @@
 use Exception;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
-
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
 class Handler extends ExceptionHandler {
 
     /**
@@ -19,10 +11,7 @@ class Handler extends ExceptionHandler {
      * @var array
      */
     protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
+        'Symfony\Component\HttpKernel\Exception\HttpException'
     ];
 
     /**
@@ -47,18 +36,7 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e)
     {
-        if($e instanceof NotFoundResourceException)
-        {
-            return response()->json(['message' => 'Recurso no encontrado', 'code' => 404], 404);
-        }
-
-        if($e instanceof NotFoundHttpException)
-        {
-            return response()->json(['message' => 'Petición inválida', 'code' => 400], 400);
-        }
-
         return parent::render($request, $e);
-
-        //return response()->json(['message' => 'Error inesperado, intentar más tarde', 'code' => 500], 500);   
     }
+
 }
