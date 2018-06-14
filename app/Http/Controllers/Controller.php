@@ -2,6 +2,8 @@
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+use Illuminate\Http\Request;
+
 class Controller extends BaseController
 {
 	public function crearRespuesta($datos,$codigo)
@@ -13,4 +15,10 @@ class Controller extends BaseController
 	{
 		return response()->json(['message'=>$mensaje,'code'=>$codigo],$codigo);
 	}
+
+//Se sobrescribe este metodo para evitar redireccion cuando hay error en la validacion
+	protected function buildFailedValidationResponse(Request $request, array $errors)
+    {
+        return $this->crearRespuestaError($errors,422);
+    }
 }
