@@ -8,8 +8,8 @@ class EstudianteController extends Controller
 {
 	public function index()
 	{
-		$estdiantes = Estudiante::all();
-		return $this->crearRespuesta($estdiantes,200);
+		$estudiantes = Estudiante::all();
+		return $this->crearRespuesta($estudiantes,200);
 	}
 
 	public function show($id)
@@ -59,9 +59,18 @@ class EstudianteController extends Controller
 		return $this->crearRespuestaError('El id especificado no corresponde a un estudiante',404);
 	}
 
-	public function destroy()
+	public function destroy($estudiante_id)
 	{
-		return 'desde destroy en estudiantecontroller';
+		$estudiante = Estudiante::find($estudiante_id);
+
+		if($estudiante)
+		{
+		  $estudiante->cursos()->sync([]);
+          $estudiante->delete();
+          return $this->crearRespuesta('El estudiante ha sido eliminado', 200);
+		}
+
+		return $this->crearRespuestaError('No existe estudiante con el id especificado', 404);
 	}
 
 	public function validacion($request)

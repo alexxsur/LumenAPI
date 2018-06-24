@@ -59,9 +59,24 @@ class ProfesorController extends Controller
 		return $this->crearRespuestaError('El id especificado no corresponde a un profesor',404);
 	}
 
-	public function destroy()
+	public function destroy($profesor_id)
 	{
-		return 'desde destroy en profesorcontroller';
+		$profesor = Profesor::find($profesor_id);
+
+		if($profesor)
+		{
+		  $profesor->cursos();
+
+		  if (sizeof($profesor->cursos)>0) {
+			return $this->crearRespuestaError('El profesor tiene cursos asociados. Se deben elimnar estos cursos previamente',409);
+		  }
+
+
+          $profesor->delete();
+          return $this->crearRespuesta('El profesor ha sido eliminado', 200);
+		}
+
+		return $this->crearRespuestaError('No existe profesor con el id especificado', 404);
 	}
 
 	public function validacion($request)
