@@ -47,7 +47,16 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e)
     {
+        if($e instanceof NotFoundResourceException)
+        {
+            return response()->json(['message' => 'Recurso no encontrado', 'code' => 404], 404);
+        }
+        if($e instanceof NotFoundHttpException)
+        {
+            return response()->json(['message' => 'Petición inválida', 'code' => 400], 400);
+        }
         return parent::render($request, $e);
+        //return response()->json(['message' => 'Error inesperado, intentar más tarde', 'code' => 500], 500);
     }
 
 }
