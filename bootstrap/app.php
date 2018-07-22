@@ -1,10 +1,14 @@
 <?php
 
-class_alias(Illuminate\Support\Facades\Config::class,'Config');
-
 require_once __DIR__.'/../vendor/autoload.php';
-
-Dotenv::load(__DIR__.'/../');
+try
+{
+    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+}
+catch (Dotenv\Exception\InvalidPathException $e)
+{
+    //
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +24,8 @@ Dotenv::load(__DIR__.'/../');
 $app = new Laravel\Lumen\Application(
 	realpath(__DIR__.'/../')
 );
+
+class_alias(Illuminate\Support\Facades\Config::class,'Config');
 
 $app->withFacades();
 
@@ -66,9 +72,9 @@ $app->singleton(
 //     // Laravel\Lumen\Http\Middleware\VerifyCsrfToken::class,
  ]);
 
-// $app->routeMiddleware([
-
-// ]);
+$app->routeMiddleware([
+	'oauth' => \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
